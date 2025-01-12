@@ -58,21 +58,6 @@
 		<script src="js/libs/tern-threejs/threejs.js"></script>
 		<script src="js/libs/signals.min.js"></script>
 
-		<script>
-			let client = new WebSocket("ws://localhost:3000/");
-			console.log(client);
-
-			// Connection opened
-			client.addEventListener("open", (event) => {
-				client.send("Hello Server!");
-			});
-
-			// Listen for messages
-			client.addEventListener("message", (event) => {
-				console.log("Message from server ", event.data);
-			});
-		</script>
-
 		<script type="module">
 
 			import * as THREE from 'three';
@@ -265,6 +250,38 @@
 				}
 
 			}
+
+
+			let client = new WebSocket("ws://localhost:3000/");
+			console.log(client);
+
+			// Connection opened
+			client.addEventListener("open", (event) => {
+				client.send("Hello Server!");
+			});
+
+			// Listen for messages
+			client.addEventListener("message", (event) => {
+				console.log("Message from server ", event.data);
+			});
+
+			window.editor.wss = client;
+
+			const signals = window.editor.signals;
+
+			signals.geometryChanged.add( function() { window.editor.wss.send('geometryChanged'); } );
+			signals.objectAdded.add( function() { window.editor.wss.send('objectAdded'); } );
+			signals.objectChanged.add( function() { window.editor.wss.send('objectChanged'); } );
+			signals.objectRemoved.add( function() { window.editor.wss.send('objectRemoved'); } );
+			signals.materialChanged.add( function() { window.editor.wss.send('materialChanged'); } );
+
+			// signals.sceneBackgroundChanged.add( function() { window.wss.send('geometryChanged'); } );
+			// signals.sceneEnvironmentChanged.add( function() { window.wss.send('geometryChanged'); } );
+			// signals.sceneFogChanged.add( function() { window.wss.send('geometryChanged'); } );
+
+			signals.sceneGraphChanged.add( function() { window.editor.wss.send('sceneGraphChanged'); } );
+			// signals.scriptChanged.add( function() { window.wss.send('scriptChanged'); } );
+			// signals.historyChanged.add( function() { window.wss.send('historyChanged'); } );
 
 		</script>
 	</body>
