@@ -43,6 +43,7 @@
     "> 1%, not dead, not ie 11, not op_mini all"
   ],
   "scripts": {
+    "serve": "http-server",
     "start": "npm run dev",
     "test": "npm run lint && npm run test-unit && npm run test-unit-addons",
     "build": "rollup -c utils/build/rollup.config.js",

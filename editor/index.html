@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js editor</title>
+		<title>scenegraph-web-client.js editor</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link rel="apple-touch-icon" href="images/icon.png">
@@ -57,6 +57,21 @@
 		<script src="js/libs/ternjs/doc_comment.js"></script>
 		<script src="js/libs/tern-threejs/threejs.js"></script>
 		<script src="js/libs/signals.min.js"></script>
+
+		<script>
+			let client = new WebSocket("ws://localhost:3000/");
+			console.log(client);
+
+			// Connection opened
+			client.addEventListener("open", (event) => {
+				client.send("Hello Server!");
+			});
+
+			// Listen for messages
+			client.addEventListener("message", (event) => {
+				console.log("Message from server ", event.data);
+			});
+		</script>
 
 		<script type="module">
 
